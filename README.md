@@ -3,6 +3,7 @@
 
 This repository contains code for the paper ***Unbiased organism-agnostic and highly sensitive signal peptide predictor with deep protein language model***, which is accepted by *Nature Computational Science*.
 
+The full text of the paper can be accessed via the [view-only link](https://rdcu.be/dtupB)
 
 You can use either USPNet or USPNet-fast to predict the signal peptide of a protein sequence.<br>
 We also provide MSA Transformer embeddings of the benchmark set as a demo.<br>
