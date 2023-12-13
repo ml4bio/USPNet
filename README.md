@@ -1,7 +1,7 @@
 # USPNet
 
 
-This repository contains code for the paper ***Unbiased organism-agnostic and highly sensitive signal peptide predictor with deep protein language model***, which is accepted by *Nature Computational Science*
+This repository contains code for the paper ***Unbiased organism-agnostic and highly sensitive signal peptide predictor with deep protein language model***, which is accepted by *Nature Computational Science*.
 
 
 You can use either USPNet or USPNet-fast to predict the signal peptide of a protein sequence.<br>
