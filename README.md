@@ -103,3 +103,19 @@ python predict_fast.py --data_dir <data_directory_path>
 
 ```
 
+## Citations <a name="citations"></a>
+
+If you find the models useful in your research, please kindly cite our paper:
+
+```bibtex
+@article{shen2024unbiased,
+  title={Unbiased organism-agnostic and highly sensitive signal peptide predictor with deep protein language model},
+  author={Shen, Junbo and Yu, Qinze and Chen, Shenyang and Tan, Qingxiong and Li, Jingchen and Li, Yu},
+  journal={Nature Computational Science},
+  volume={4},
+  number={1},
+  pages={29--42},
+  year={2024},
+  publisher={Nature Publishing Group US New York}
+}
+```
