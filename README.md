@@ -1,5 +1,6 @@
 # USPNet
 
+Update-March 2024: We provide a [Demo](https://www.kaggle.com/code/qinzeyu/uspnet-example) for using USPNet-fast, which takes raw amino acid sequences as input.<br>
 
 This repository contains code for the paper ***Unbiased organism-agnostic and highly sensitive signal peptide predictor with deep protein language model***, which is accepted by *Nature Computational Science*.
 
@@ -8,7 +9,7 @@ This repository contains code for the paper ***Unbiased organism-agnostic and hi
 The full text of the paper can also be accessed via the [view-only link](https://rdcu.be/dtupB).
 
 You can use either USPNet or USPNet-fast to predict the signal peptide of a protein sequence.<br>
-We also provide a [Demo](https://www.kaggle.com/code/qinzeyu/uspnet-example) for using USPNet-fast and taking raw amino acid sequences as input.<br>
+
 
 
 
