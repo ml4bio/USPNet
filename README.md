@@ -21,7 +21,7 @@ First, download the repository and create the environment.<br>
 ### Create an environment with conda
 requirement
 ```bash
-git clone https://github.com/JunboShen/USPNet.git
+git clone https://github.com/ml4bio/USPNet.git
 cd ./USPNet
 conda env create -f ./environment.yml
 ```
