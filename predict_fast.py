@@ -22,19 +22,22 @@ dic = {'NO_SP': 0, 'SP': 1, 'LIPO': 2, 'TAT': 3, 'TATLIPO' : 4, 'PILIN' : 5}
 dic2 = {0: 'NO_SP', 1: 'SP', 2: 'LIPO', 3: 'TAT', 4: 'TATLIPO', 5: 'PILIN'}
 kingdom_dic = {'EUKARYA':0, 'ARCHAEA':1, 'POSITIVE':2, 'NEGATIVE': 3}
 
+# Detect device: CUDA if available, else CPU
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 #Load ESM1b model
 #esm_model, alphabet = esm.pretrained.esm1b_t33_650M_UR50S()
 #Load ESM2 model
 esm_model, alphabet = esm.pretrained.esm2_t33_650M_UR50D()
-esm_model = (esm_model).cuda("cuda:0")
+esm_model = (esm_model).to(device)
 batch_converter = alphabet.get_batch_converter()
 def trans_data_esm(str_array):
 
     # Process batches
     batch_labels, batch_strs, batch_tokens = batch_converter(str_array)
-    batch_tokens = batch_tokens.cuda()
+    batch_tokens = batch_tokens.to(device)
 
-    # Extract per-residue representations (on CPU)
+    # Extract per-residue representations 
     with torch.no_grad():
         results = esm_model(batch_tokens, repr_layers=[33], return_contacts=True)
     token_representations = results["representations"][33]
@@ -143,7 +146,7 @@ def trans_output(str1):
     return a
 
 if __name__ == '__main__':
-    device = torch.device("cuda:0")
+
     # read file names if provided
     if args.data_dir != 'data_processed':
         data_dir = args.data_dir
@@ -174,10 +177,10 @@ if __name__ == '__main__':
     output_aa = []
     aux_test = []
 
-    X_test = torch.tensor(X_test)
+    X_test = torch.tensor(X_test).to(device)
     test_loader = torch.utils.data.DataLoader(X_test, batch_size=256)
     for i, input in enumerate(test_loader):
-        input = input.cuda()
+        input = input.to(device)
         aux = input[:, 70:74]
         aux = aux.cpu().detach().numpy()
         aux_test.extend(aux)

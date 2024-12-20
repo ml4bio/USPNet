@@ -83,8 +83,8 @@ class BLSTM(nn.Module):
         batch_size = input.shape[0]
         # input : [batch_size, seq_len, feature_size]
 
-        hidden_state = torch.randn(self.num_layers*self.num_directions, batch_size, self.hidden_dim).cuda()  # [num_layers(=1) * num_directions(=2), batch_size, n_hidden]
-        cell_state = torch.randn(self.num_layers*self.num_directions, batch_size, self.hidden_dim).cuda()   # [num_layers(=1) * num_directions(=2), batch_size, n_hidden]
+        hidden_state = torch.randn(self.num_layers*self.num_directions, batch_size, self.hidden_dim).to(input.device)   # [num_layers(=1) * num_directions(=2), batch_size, n_hidden]
+        cell_state = torch.randn(self.num_layers*self.num_directions, batch_size, self.hidden_dim).to(input.device)  # [num_layers(=1) * num_directions(=2), batch_size, n_hidden]
         # input=torch.tensor(input, dtype=torch.float32).cuda()
 
         self.lstm.flatten_parameters()

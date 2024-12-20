@@ -55,10 +55,12 @@ def greedy_select(msa: List[Tuple[str, str]], num_seqs: int, mode: str = "max") 
     indices = sorted(indices)
     return [msa[idx] for idx in indices]
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
+
 # Load MSA model
 msa_transformer, msa_alphabet = esm.pretrained.esm_msa1b_t12_100M_UR50S()
 msa_transformer = msa_transformer.eval()
-msa_transformer = msa_transformer.cuda(0)
+msa_transformer = msa_transformer.to(device)
 msa_batch_converter = msa_alphabet.get_batch_converter()
 
 NB_seqs_per_msa = 128
@@ -72,8 +74,9 @@ def createDatasetEmbedding(data_path, save_path):
         msa_data = read_msa(data_path + MSAs[i])
         msa_data = greedy_select(msa_data, num_seqs=NB_seqs_per_msa)
         msa_batch_labels, msa_batch_strs, msa_batch_tokens = msa_batch_converter([msa_data])
-        torch.cuda.empty_cache()
-        msa_batch_tokens = msa_batch_tokens.cuda(0)
+        if device.type == 'cuda':
+            torch.cuda.empty_cache()
+        msa_batch_tokens = msa_batch_tokens.to(device)
         with torch.no_grad():
             results = msa_transformer(msa_batch_tokens, repr_layers=[12], return_contacts=True)
 

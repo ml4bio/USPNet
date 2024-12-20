@@ -145,9 +145,9 @@ def evaluate(X, label, mode):
     for i, (input, target) in enumerate(test_loader):
         target_test = target[:, 0].reshape(target.shape[0])
         target_aa = target[:, 1:]
-        input = input.cuda()
-        target_test = target[:, 0].reshape(target.shape[0]).cuda()
-        target_aa = target_aa.cuda()
+        input = input.to(device)
+        target_test = target[:, 0].reshape(target.shape[0]).to(device)
+        target_aa = target_aa.to(device)
         o1, o_aa= model(input)
         if mode == "best path":
             o_aa = np.array(model.crf.decode(o_aa.permute(1, 0, 2)))
@@ -177,7 +177,7 @@ def aaTest(output_aa_origin, labels_test_aa_origin, labels_test_origin, testType
     elif (testType == "TATLIPO"):
         tag=4
 
-    labels_test_origin_torch = torch.Tensor(labels_test_origin)
+    labels_test_origin_torch = torch.Tensor(labels_test_origin).to(device)
     output_aa = output_aa_origin.reshape(-1, 70).clone()
     labels_test_aa = labels_test_aa_origin.reshape(-1, 70).copy()
     output_aa = output_aa[torch.where(labels_test_origin_torch==tag)].reshape(-1, 1)
@@ -230,7 +230,7 @@ def aaTest(output_aa_origin, labels_test_aa_origin, labels_test_origin, testType
 if __name__ == '__main__':
 
     # crf has two ways to predict: prob/best path
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     mode = "best path"
 
     if args.group_info == 'no_group_info':

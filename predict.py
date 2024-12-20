@@ -96,7 +96,7 @@ def trans_output(str1):
     return a
 
 if __name__ == '__main__':
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # read file names if provided
     if args.data_dir != 'data_processed':
         data_dir = args.data_dir
@@ -127,10 +127,10 @@ if __name__ == '__main__':
     output_aa = []
     aux_test = []
 
-    X_test = torch.tensor(X_test)
+    X_test = torch.tensor(X_test).to(device)
     test_loader = torch.utils.data.DataLoader(X_test, batch_size=256)
     for i, input in enumerate(test_loader):
-        input = input.cuda()
+        input = input.to(device)
         aux = input[:, 70:74]
         aux = aux.cpu().detach().numpy()
         aux_test.extend(aux)

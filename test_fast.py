@@ -22,11 +22,12 @@ position_specific_classes_enc.fit(
     np.array(PositionSpecificLetter.values()).reshape((len(PositionSpecificLetter.values()), 1))
 )
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 #Load ESM1b model
 #esm_model, alphabet = esm.pretrained.esm1b_t33_650M_UR50S()
 #Load ESM2 model
 esm_model, alphabet = esm.pretrained.esm2_t33_650M_UR50D()
-esm_model = (esm_model).cuda("cuda:0")
+esm_model = (esm_model).to(device)
 batch_converter = alphabet.get_batch_converter()
 
 def relabel(y, label_test, keep, mode):
@@ -64,9 +65,9 @@ def trans_data_esm(str_array):
 
     # Process batches
     batch_labels, batch_strs, batch_tokens = batch_converter(str_array)
-    batch_tokens = batch_tokens.cuda()
+    batch_tokens = batch_tokens.to(device)
 
-    # Extract per-residue representations (on CPU)
+    # Extract per-residue representations
     with torch.no_grad():
         results = esm_model(batch_tokens, repr_layers=[33], return_contacts=True)
     token_representations = results["representations"][33]
@@ -75,7 +76,7 @@ def trans_data_esm(str_array):
         temp_tensor = token_representations[i, 1: len(seq) + 1]
         sequence_representations.append(temp_tensor.mean(0).detach().cpu().numpy())
 
-    result = torch.tensor(np.array(sequence_representations))
+    result = torch.tensor(np.array(sequence_representations)).to(device)
 
     return result
 
@@ -193,9 +194,9 @@ def evaluate(X, label, mode):
     for i, (input, target) in enumerate(test_loader):
         target_test = target[:, 0].reshape(target.shape[0])
         target_aa = target[:, 1:]
-        input = input.cuda()
-        target_test = target[:, 0].reshape(target.shape[0]).cuda()
-        target_aa = target_aa.cuda()
+        input = input.to(device)
+        target_test = target[:, 0].reshape(target.shape[0]).to(device)
+        target_aa = target_aa.to(device)
         o1, o_aa= model(input)
         if mode == "best path":
             o_aa = np.array(model.crf.decode(o_aa.permute(1, 0, 2)))
@@ -207,8 +208,8 @@ def evaluate(X, label, mode):
         labels_test.extend(target_test.cpu().detach().numpy())
         labels_test_aa.extend(target_aa.cpu().detach().numpy())
 
-    output = torch.tensor(np.array(output))
-    output_aa = torch.tensor(np.array(output_aa)).reshape(-1, 1)
+    output = torch.tensor(np.array(output)).to(device)
+    output_aa = torch.tensor(np.array(output_aa)).reshape(-1, 1).to(device)
     labels_test = np.array(labels_test)
     labels_test_aa = np.array(labels_test_aa).reshape(-1, 1)
 
@@ -225,7 +226,7 @@ def aaTest(output_aa_origin, labels_test_aa_origin, labels_test_origin, testType
     elif (testType == "TATLIPO"):
         tag=4
 
-    labels_test_origin_torch = torch.Tensor(labels_test_origin)
+    labels_test_origin_torch = torch.Tensor(labels_test_origin).to(device)
     output_aa = output_aa_origin.reshape(-1, 70).clone()
     labels_test_aa = labels_test_aa_origin.reshape(-1, 70).copy()
     output_aa = output_aa[torch.where(labels_test_origin_torch==tag)].reshape(-1, 1)
@@ -278,7 +279,6 @@ def aaTest(output_aa_origin, labels_test_aa_origin, labels_test_origin, testType
 if __name__ == '__main__':
 
     # crf has two ways to predict: prob/best path
-    device = torch.device("cuda:0")
     mode = "best path"
 
     if args.group_info == 'no_group_info':
