@@ -33,7 +33,10 @@ conda env create -f ./environment.yml
 [Categorical test data](https://drive.google.com/file/d/1r9sw5t3BVzYsw4RZG48N-7Y621pQFHJK/view?usp=sharing).<br>
 
 ### Download embeddings for the benchmark set
-[MSA embedding for test set](https://drive.google.com/file/d/1FPPKO9OaAdB0K9heUqQuymmqMN4m_XI3/view?usp=sharing).<br>
+[MSA embedding for test set](https://drive.google.com/file/d/1FPPKO9OaAdB0K9heUqQuymmqMN4m_XI3/view?usp=sharing).<be>
+
+### Download the table of benchmark sequences with <40% similarity to the training set
+[Similarity-reduced test set table](https://osf.io/pbwzr).<br>
 
 ### All the data mentioned above can also be obtained from our [OSF project](https://osf.io/nh3cf/).<br>
 
