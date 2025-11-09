@@ -7,7 +7,8 @@ from utils_tools.utils import *
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Predict')
 parser.add_argument('group_info', nargs='?', default='default', help='group information provided or not')
-
+parser.add_argument('--model_dir', nargs='?', default=".",
+                    help='Directory containing model weight files. The filename is selected based on --group_info.')
 # Parse arguments
 args = parser.parse_args()
 
@@ -282,10 +283,27 @@ if __name__ == '__main__':
     mode = "best path"
 
     if args.group_info == 'no_group_info':
-        model = torch.load("../data/mdl/USPNet_fast_no_group_info.pth", map_location=device)
+        model_filename = "USPNet_fast_no_group_info.pth"
     else:
-        model = torch.load("../data/mdl/USPNet_fast.pth", map_location=device)
+        model_filename = "USPNet_fast.pth"
 
+    model_path = os.path.join(args.model_dir, model_filename)
+
+    print(f"Loading model from: {model_path}")
+
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"Model file not found: {model_path}")
+
+    try:
+        model = torch.load(model_path, map_location=device)
+    except Exception as e:
+        msg = str(e)
+        # Detect PyTorch>=2.6 "weights_only" failure
+        if "weights only load failed" in msg or "Unsupported global" in msg:
+            print("Retrying with weights_only=False ...")
+            model = torch.load(model_path, map_location=device, weights_only=False)
+        else:
+            raise
 
     if isinstance(model, torch.nn.DataParallel):
         # access the model inside the DataParallel wrapper

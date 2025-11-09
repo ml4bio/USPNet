@@ -40,7 +40,9 @@ conda env create -f ./environment.yml
 
 ### All the data mentioned above can also be obtained from our [OSF project](https://osf.io/nh3cf/).<br>
 
-### Download trained predictive models
+### Download trained predictive models 
+(Place the downloaded model files in the root directory or specify another location with `--model_dir` argument for prediction scripts.)
+
 [USPNet prediction head](https://drive.google.com/file/d/1ZNDZ_ulmeZzol7u1_fMEODe7nvtWLFqh/view?usp=sharing)
 
 [USPNet prediction head (without organism group information)](https://drive.google.com/file/d/1YfFmGZNEhl4q86dljPeWub1WLLCH7VNx/view?usp=drive_link).
@@ -55,39 +57,39 @@ Specialized trained model optimized with higher accuracy on the major class (Sec
 [USPNet-fast prediction head (focus on Sec/SPI, require group information)](https://drive.google.com/file/d/1uwT9fL8TWwh8kXVs1IwdBTtMLALB9EJ7/view?usp=drive_link).<br>
 
 ## Usage
-Put all the downloaded files into the same folder.<br>
+Put all the downloaded files into the root directory.<br>
 
 If you want to use USPNet on our benchmark set, please run:
 ```bash
 # data processing, data_processed/ folder is created by default
 python data_processing.py 
 #Please put MSA embedding into the data_processed/ folder
-python predict.py
+python predict.py [--model_dir /path/to/model_directory]
 
 # categorical benchmark data
 unzip test_data.zip
-python test.py
+python test.py [--model_dir /path/to/model_directory]
 ```
 
 Demo of USPNet on benchmark data without organism group information:
 ```bash
-python predict.py --group_info no_group_info
+python predict.py --group_info no_group_info [--model_dir /path/to/model_directory]
 
-python test.py no_group_info
+python test.py no_group_info [--model_dir /path/to/model_directory]
 ```
 
 Demo of USPNet-fast on benchmark data:
 ```bash
-python predict_fast.py
+python predict_fast.py [--model_dir /path/to/model_directory]
 
-python test_fast.py
+python test_fast.py [--model_dir /path/to/model_directory]
 ```
 
 Demo of USPNet on benchmark data without organism group information:
 ```bash
-python predict.py --group_info no_group_info
+python predict.py --group_info no_group_info [--model_dir /path/to/model_directory]
 
-python test_fast.py no_group_info
+python test_fast.py no_group_info [--model_dir /path/to/model_directory]
 ```
 
 To generate MSA embeddings on your own protein sequences and use USPNet to perform signal peptide prediction, please run:
@@ -96,7 +98,7 @@ To generate MSA embeddings on your own protein sequences and use USPNet to perfo
 python data_processing.py --fasta_file <fasta_file_path> --data_processed_dir <data_directory_path> --msa_dir <msa_directory_path>
 
 # Prediction. use 'python predict.py --data_dir <data_directory_path> --group_info no_group_info' if lack of organism group information.
-python predict.py --data_dir <data_directory_path>
+python predict.py --data_dir <data_directory_path> [--model_dir /path/to/model_directory]
 ```
 
 If you want to use USPNet-fast to perform signal peptide prediction on your own protein sequences, please run:
@@ -105,7 +107,7 @@ If you want to use USPNet-fast to perform signal peptide prediction on your own 
 python data_processing.py --fasta_file <fasta_file_path> --data_processed_dir <data_directory_path>
 
 # Prediction. use 'python predict_fast.py --data_dir <data_directory_path> --group_info no_group_info' if lack of organism group information.
-python predict_fast.py --data_dir <data_directory_path>
+python predict_fast.py --data_dir <data_directory_path> [--model_dir /path/to/model_directory]
 
 ```
 
