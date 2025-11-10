@@ -64,32 +64,48 @@ If you want to use USPNet on our benchmark set, please run:
 # data processing, data_processed/ folder is created by default
 python data_processing.py 
 #Please put MSA embedding into the data_processed/ folder
-python predict.py [--model_dir /path/to/model_directory]
+python predict.py
+# To use a custom model directory:
+# python predict.py --model_dir /path/to/model_directory
 
 # categorical benchmark data
 unzip test_data.zip
-python test.py [--model_dir /path/to/model_directory]
+python test.py
+# To use a custom model directory:
+# python test.py --model_dir /path/to/model_directory
 ```
 
 Demo of USPNet on benchmark data without organism group information:
 ```bash
-python predict.py --group_info no_group_info [--model_dir /path/to/model_directory]
+python predict.py --group_info no_group_info
+# Custom model directory:
+# python predict.py --group_info no_group_info --model_dir /path/to/model_directory
 
-python test.py no_group_info [--model_dir /path/to/model_directory]
+python test.py no_group_info
+# Custom model directory:
+# python test.py no_group_info --model_dir /path/to/model_directory
 ```
 
 Demo of USPNet-fast on benchmark data:
 ```bash
-python predict_fast.py [--model_dir /path/to/model_directory]
+python predict_fast.py
+# Custom model directory:
+# python predict_fast.py --model_dir /path/to/model_directory
 
-python test_fast.py [--model_dir /path/to/model_directory]
+python test_fast.py
+# Custom model directory:
+# python test_fast.py --model_dir /path/to/model_directory
 ```
 
 Demo of USPNet on benchmark data without organism group information:
 ```bash
-python predict.py --group_info no_group_info [--model_dir /path/to/model_directory]
+python predict.py --group_info no_group_info
+# Custom model directory:
+# python predict.py --group_info no_group_info --model_dir /path/to/model_directory
 
-python test_fast.py no_group_info [--model_dir /path/to/model_directory]
+python test_fast.py no_group_info
+# Custom model directory:
+# python test_fast.py no_group_info --model_dir /path/to/model_directory
 ```
 
 To generate MSA embeddings on your own protein sequences and use USPNet to perform signal peptide prediction, please run:
@@ -97,8 +113,12 @@ To generate MSA embeddings on your own protein sequences and use USPNet to perfo
 # MSA embedding generation. <data_directory_path>: Directory where the processed data will be saved. <msa_directory_path>: Directory for storing MSA files (.a3m).
 python data_processing.py --fasta_file <fasta_file_path> --data_processed_dir <data_directory_path> --msa_dir <msa_directory_path>
 
-# Prediction. use 'python predict.py --data_dir <data_directory_path> --group_info no_group_info' if lack of organism group information.
-python predict.py --data_dir <data_directory_path> [--model_dir /path/to/model_directory]
+# Prediction. Use '--group_info no_group_info' if organism group info is unavailable.
+# Use '--model_dir /path/to/model_dir' to specify a custom model directory.
+python predict.py --data_dir <data_directory_path>
+# Optional:
+# python predict.py --data_dir <data_directory_path> --group_info no_group_info
+# python predict.py --data_dir <data_directory_path> --model_dir /path/to/model_dir
 ```
 
 If you want to use USPNet-fast to perform signal peptide prediction on your own protein sequences, please run:
@@ -106,8 +126,12 @@ If you want to use USPNet-fast to perform signal peptide prediction on your own 
 # Data processing. Processed data is saved in data_processed/ by default.
 python data_processing.py --fasta_file <fasta_file_path> --data_processed_dir <data_directory_path>
 
-# Prediction. use 'python predict_fast.py --data_dir <data_directory_path> --group_info no_group_info' if lack of organism group information.
-python predict_fast.py --data_dir <data_directory_path> [--model_dir /path/to/model_directory]
+# Prediction. Use '--group_info no_group_info' if organism group information is unavailable.
+# Use '--model_dir /path/to/model_dir' to specify a custom model directory.
+python predict_fast.py --data_dir <data_directory_path>
+# Optional:
+# python predict_fast.py --data_dir <data_directory_path> --group_info no_group_info
+# python predict_fast.py --data_dir <data_directory_path> --model_dir /path/to/model_dir
 
 ```
 
